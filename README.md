@@ -4,7 +4,7 @@
 #### Terraform default file/folder structure
 ##### .gitignore
 ###### AWS keys with Terraform security
-![Image Link]()
+![Image Link](https://github.com/vivrk2989/eng103a_IaC_Terraform/blob/main/Images/Terraform%20architecture.png)
 
 - Terraform commands
 - `terraform init` To initialise Terraform
