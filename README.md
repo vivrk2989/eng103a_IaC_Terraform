@@ -61,6 +61,8 @@ resource "aws_instance" "vivek_tf_app" {
 
 ### Terraform VPC Task
 - Terraform script to create a vpc with public subnet, Internet Gateway, Route Table and an instance with the required security group
+
+- Creating VPC
 ```
 # provider aws 
 provider "aws" {
@@ -85,8 +87,9 @@ resource "aws_vpc" "vivek_tf_vpc" {
   }
 
 }
-
-
+```
+- Subnet
+```
 resource "aws_subnet" "vivek_tf_subnet" {
   vpc_id                  = "${aws_vpc.vivek_tf_vpc.id}"
   cidr_block              = "10.0.24.0/24"
@@ -97,7 +100,10 @@ resource "aws_subnet" "vivek_tf_subnet" {
   }
 
 }
+```
 
+- Creating Internet Gateway
+```
 resource "aws_internet_gateway" "vivek_tf_vpc_ig" {
   vpc_id = "${aws_vpc.vivek_tf_vpc.id}"
   tags = {
@@ -105,7 +111,9 @@ resource "aws_internet_gateway" "vivek_tf_vpc_ig" {
   }
 }
 
-
+```
+- Creating Route table
+```
 resource "aws_route_table" "vivek_tf_vpc_rt" {
   vpc_id = "${aws_vpc.vivek_tf_vpc.id}"
   route {
@@ -117,10 +125,11 @@ resource "aws_route_table" "vivek_tf_vpc_rt" {
   }
 
 }
+```
 
+- Assigning security group
 
-
-
+```
 resource "aws_security_group" "vivek_tf_secgrp" {
   vpc_id = "${aws_vpc.vivek_tf_vpc.id}"
 
@@ -160,7 +169,9 @@ resource "aws_security_group" "vivek_tf_secgrp" {
     Name = "eng103a_vivek_tf_sg_app"
   }
 }
-
+```
+- Creating Instance within the public subnet
+```
 # name of the resource
 resource "aws_instance" "vivek_tf_app" {
 
