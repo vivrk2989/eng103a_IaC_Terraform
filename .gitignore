@@ -2,3 +2,5 @@ terraform-provider-aws_v4.2.0_x5.exe
 .terraform/
 .terraform.lock.hcl
 variable.tf
+terraform.tfstate.backup
+terraform.tfstate

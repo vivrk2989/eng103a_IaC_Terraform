@@ -28,13 +28,24 @@ resource "aws_vpc" "vivek_tf_vpc" {
 }
 
 
-resource "aws_subnet" "vivek_tf_subnet" {
+resource "aws_subnet" "vivek_tf_subnet1" {
   vpc_id                  = "${aws_vpc.vivek_tf_vpc.id}"
-  cidr_block              = "10.0.24.0/24"
+  cidr_block              = "10.0.23.0/24"
   map_public_ip_on_launch = "true"
   availability_zone       = "eu-west-1b"
   tags = {
     Name = "eng103a_vivek_tf_subnet"
+  }
+
+}
+
+resource "aws_subnet" "vivek_tf_subnet2" {
+  vpc_id                  = "${aws_vpc.vivek_tf_vpc.id}"
+  cidr_block              = "10.0.25.0/24"
+  map_public_ip_on_launch = "true"
+  availability_zone       = "eu-west-1c"
+  tags = {
+    Name = "eng103a_vivek_tf_subnet2"
   }
 
 }
@@ -58,8 +69,6 @@ resource "aws_route_table" "vivek_tf_vpc_rt" {
   }
 
 }
-
-
 
 
 resource "aws_security_group" "vivek_tf_secgrp" {
@@ -119,7 +128,7 @@ resource "aws_instance" "vivek_tf_app" {
   vpc_security_group_ids = ["${aws_security_group.vivek_tf_secgrp.id}"]
 
   # specify subnet id (if launch on own vpc)
-  subnet_id = "${aws_subnet.vivek_tf_subnet.id}"
+  subnet_id = "${aws_subnet.vivek_tf_subnet1.id}"
   
   key_name = "eng103a_vivek"
 # what is the name of your instance
@@ -127,3 +136,87 @@ resource "aws_instance" "vivek_tf_app" {
     Name = var.tags
   }
 }
+
+
+# # DEMO VPC
+
+# provider "aws" {
+#   region = "eu-west-1"
+
+# }
+
+
+
+# resource "aws_vpc" "vivek_tf_vpc" {
+#   cidr_block = "10.0.0.0/16"
+#   instance_tenancy = "default"
+
+
+#   tags = {
+#      Name = "vivek_vpc_tf"
+#   }
+  
+# }
+
+# resource "aws_internet_gateway" "vivek_tf_vpc_ig" {
+#   vpc_id = "${aws_vpc.vivek_tf_vpc.id}"
+  
+#   tags = {
+#     Name = "vivek_vpc_tf_ig"
+#   }
+# }
+
+# # Creating 1st subnet
+
+# resource "aws_subnet" "public_subnet" {
+#   vpc_id = "${aws_vpc.vivek_tf_vpc.id}"
+#   cidr_block = "10.0.8.0/24"
+#   map_public_ip_on_launch = true
+#   availability_zone = "eu-west-1a"
+
+#   tags = {
+#      Name = "Public Subnet"
+
+#   }  
+  
+# }
+
+# # Creating 2nd subnet
+
+# resource "aws_subnet" "public_subnet2" {
+#   vpc_id = "${aws_vpc.vivek_tf_vpc.id}"
+#   cidr_block = "10.0.9.0/24"
+#   map_public_ip_on_launch = true
+#   availability_zone = "eu-west-1b"
+  
+#   tags = {
+#      Name = "Subnet 2"
+#   }
+
+# }
+
+# # creating Route Table
+
+# resource "aws_route_table" "route" {
+#   vpc_id = "${aws_vpc.vivek_tf_vpc.id}"
+
+#   route {
+#       cidr_block = "0.0.0.0/0"
+#       gateway_id = "${aws_internet_gateway.vivek_tf_vpc_ig.id}"
+#   }
+#   tags = {
+#      Name = "Route to internet"
+#   }
+# }
+
+# resource "aws_route_table_association" "rtas1" {
+#   subnet_id = "${aws_subnet.public_subnet.id}"
+#   route_table_id = "${aws_route_table.route.id}"
+  
+# }
+
+# resource "aws_route_table_association" "rtas2" {
+#   subnet_id = "${aws_subnet.public_subnet2.id}"
+#   route_table_id = "${aws_route_table.route.id}"
+    
+# }
